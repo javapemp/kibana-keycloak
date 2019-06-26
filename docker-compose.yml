@@ -5,13 +5,13 @@ services:
       image: postgres
       container_name: postgres
       volumes:
-        - postgres_data:/var/lib/postgresql
+        - postgres_data_test:/var/lib/postgresql
       environment:
         POSTGRES_DB: keycloak
         POSTGRES_USER: keycloak
         POSTGRES_PASSWORD: password
   keycloak:
-      image: jboss/keycloak:3.4.3.Final
+      image: jboss/keycloak:6.0.1
       container_name: keycloak
       environment: 
         POSTGRES_PORT_5432_TCP_ADDR: postgres
@@ -19,13 +19,13 @@ services:
         POSTGRES_USER: keycloak
         POSTGRES_PASSWORD: password
         KEYCLOAK_USER: admin
-        KEYCLOAK_PASSWORD: password
+        KEYCLOAK_PASSWORD: a7777777
       ports:
         - 8080:8080
       depends_on:
         - postgres
   keycloak-proxy:
-      image: jboss/keycloak-proxy:3.4.2.Final
+      image: jboss/keycloak-proxy:latest
       container_name: keycloak-proxy
       environment: 
         TARGET_URL: http://kibana:5601
@@ -33,7 +33,7 @@ services:
         HTTPS_PORT: 8443
         BASE_PATH: /
         REALM_NAME: kibana
-        AUTH_SERVER_URL: http://keycloak:8080/auth
+        AUTH_SERVER_URL: http://192.168.14.51:8080/auth
         CLIENT_ID: kibana
         ROLE_ALLOWED: user
         SSL_REQUIRED: external
@@ -59,5 +59,5 @@ services:
       depends_on: ['elasticsearch']        
 
 volumes:
-  postgres_data:
+  postgres_data_test:
       driver: local
