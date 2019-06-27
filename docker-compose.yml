@@ -43,6 +43,14 @@ services:
         - 8180:8180
       depends_on:
         - keycloak
+  keycloak-gatekeeper:
+    build:
+      context: ./gatekeeper
+    container_name: keycloak-gatekeeper
+    ports:
+      - 8280:3000
+    depends_on:
+      - keycloak
   elasticsearch:
       image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
       container_name: elasticsearch
@@ -56,12 +64,18 @@ services:
         - ELASTICSEARCH_HOST=elasticsearch
         - ELASTICSEARCH_PORT=9200
       depends_on: ['elasticsearch']
+  nginx_1:
+      image: nginx:1-alpine
+      container_name: nginx_1
+  nginx_2:
+    image: nginx:1-alpine
+    container_name: nginx_2
   nginx:
-    build:
-      context: ./nginx
-    container_name: nginx
-    volumes:
-      - $PWD/nginx/kibana.conf:/etc/nginx/conf.d/kibana.conf
+      build:
+        context: ./nginx
+      container_name: nginx
+      volumes:
+        - $PWD/nginx/kibana.conf:/etc/nginx/conf.d/kibana.conf
 
 
 volumes:

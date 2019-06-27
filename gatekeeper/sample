@@ -1,0 +1,9 @@
+http://192.168.14.51:8080/auth/realms/kibana/protocol/openid-connect/auth
+
+?
+response_type=code
+&client_id=kibana
+&redirect_uri=http%3A%2F%2Flocalhost%3A8180%2Fbundles%2Fkibana.bundle.js
+&state=ddff3c8f-523b-4551-97f3-0a615b7ee3b1
+&login=true
+&scope=openid

@@ -1,0 +1,20 @@
+discovery-url: http://192.168.14.51:8080/auth/realms/kibana
+client-id: keycloak-gatekeeper
+client-secret: dcfd7675-a1e1-456f-8389-4548d1798f91
+listen: 0.0.0.0:3000
+upstream-url: http://nginx
+
+#base-uri: /
+http-only-cookie: false
+secure-cookie: false
+enable-https-redirection: false
+
+verbose: true
+enable-logging: true
+
+resources:
+  - uri: /public
+    white-listed: true
+  - uri: /*
+    roles:
+      - user
