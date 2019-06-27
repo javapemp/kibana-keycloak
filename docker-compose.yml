@@ -5,7 +5,7 @@ services:
       image: postgres
       container_name: postgres
       volumes:
-        - postgres_data_test:/var/lib/postgresql
+        - postgres_data_test:/var/lib/postgresql/data
       environment:
         POSTGRES_DB: keycloak
         POSTGRES_USER: keycloak
@@ -28,7 +28,7 @@ services:
       image: jboss/keycloak-proxy:latest
       container_name: keycloak-proxy
       environment: 
-        TARGET_URL: http://kibana:5601
+        TARGET_URL: http://nginx
         HTTP_PORT: 8180
         HTTPS_PORT: 8443
         BASE_PATH: /
@@ -47,7 +47,6 @@ services:
       image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
       container_name: elasticsearch
       environment: ['http.host=0.0.0.0', 'transport.host=127.0.0.1', 'ELASTIC_PASSWORD=elastic']
-
   kibana:
       image: docker.elastic.co/kibana/kibana-oss:6.2.2
       container_name: kibana
@@ -56,7 +55,14 @@ services:
         - ELASTICSEARCH_PASSWORD=elastic
         - ELASTICSEARCH_HOST=elasticsearch
         - ELASTICSEARCH_PORT=9200
-      depends_on: ['elasticsearch']        
+      depends_on: ['elasticsearch']
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    volumes:
+      - $PWD/nginx/kibana.conf:/etc/nginx/conf.d/kibana.conf
+
 
 volumes:
   postgres_data_test:
